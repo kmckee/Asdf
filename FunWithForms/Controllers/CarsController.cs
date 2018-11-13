@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FunWithForms.Controllers
 {
-    public class CarsController : Controller
+    public class CarsController : Controller, ICarsController
     {
         private ICarRepository carsRepo;
 
@@ -51,6 +51,20 @@ namespace FunWithForms.Controllers
         public IActionResult DeletePost(int id)
         {
             carsRepo.Delete(id);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var car = carsRepo.GetById(id);
+            return View(car);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Car car)
+        {
+            carsRepo.Update(car);
             return RedirectToAction("Index");
         }
     }
